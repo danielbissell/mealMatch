@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Results</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body>
+        <form method="get" action="/index.html">
+            <button type="submit">Go Back to Input</button>
+        </form>
+
+    <h1>Results from GeoLocation App</h1>
+    <script>    
+ 
+    getData();
+        async function getData() {
+            const response = await fetch('/api');
+            const data = await response.json();
+            console.log(data);
+         
+         
+            data.map((x) => {
+      const root = document.createElement('div');
+                root.id = "rootDiv";
+      const name = document.createElement('div');
+                name.id = "nameDiv";
+      const geo = document.createElement('div');
+      const date = document.createElement('div');
+
+name.textContent = `Name: ${x.name}`;
+geo.textContent = `Location: ${x.location[0]}, ${x.location[1]}`;
+const dateString = new Date(x.timestamp).toLocaleString();
+
+root.append(name, geo, dateString);
+document.body.append(root);
+                });
+
+          //  document.getElementById('output').textContent = JSON.stringify(data);
+        }
+        
+
+
+    </script>
+    <p id="output"></p>
+</body>
+</html>

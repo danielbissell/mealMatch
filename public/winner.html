@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Winner</title>
+    <link rel="stylesheet" href="/css/finalPage.css">
+
+
+</head>
+<body>
+    <div id="container">
+           <div id='answerContainer'> <div id="answerSection"></div>  <div id='winnerDisp'></div>  </div>
+
+                <form id="loginForm" method='GET' action="index.html" > 
+
+                        <input id="startBtn" type="submit" value="Play Again" style="height: 30px"></input> 
+                </form>
+    </div>
+
+<script>
+
+let data= {};
+options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+
+async function returnWinner(){
+  
+    const response =  await fetch("/winner", options)
+    let answer = await response.json()
+    await console.log(answer)
+    let resultCount = await answer.answer.length
+    let answer2 = await answer.answer[0]
+
+    return [resultCount, answer2];
+    
+}
+
+returnWinner().then(function(x){
+let answer = x[1];
+let resultCount = x[0];
+console.log(resultCount, 'result count')
+console.log(answer);
+
+if( resultCount == 1){
+    var divWinner = document.getElementById('winnerDisp');
+    var divReply = document.getElementById('answerSection');
+    divReply.innerHTML = `You matched on: &nbsp;`;
+    divWinner.innerHTML = answer;
+}else{
+    var divWinner = document.getElementById('winnerDisp');//
+    var divReply = document.getElementById('answerSection');
+    divReply.innerHTML = "No matches, please play again";
+
+  // document.getElementById('winnerDisp').value = answer.answer[0]
+}//end load answer
+});
+
+
+
+    
+</script>
+
+</body>
+</html>

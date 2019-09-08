@@ -1,0 +1,55 @@
+#container{
+    background-color: rgba(128, 128, 128, 0.9);
+    margin: auto;
+    width: 90%;
+}
+#restaurantList {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    flex-wrap: wrap;
+    margin: auto;
+    padding: 30px;
+text-align: center
+  }
+
+.restaurantDiv {
+    margin: 0px 10px 10px 0px;
+    border: solid black 1px;
+    border-radius: 5%;
+    background-color: lightgray; 
+    padding: 4px;
+  }
+
+input{
+    margin-right: 25px;
+}
+#postRestaurantBtn{
+    /* change these properties to whatever you want */
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    color: #fff;
+    border: none;
+    width: 300px;
+    text-align: center;
+    margin: auto
+}
+#restForm{
+    text-align: center;
+
+}
+#titleDisp{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    text-align: center;
+    width: 70%;
+}
+body{
+    background-image: url('../images/restInterior1.jpg');
+    width: 100%;
+    background-size:cover;
+}
+#round{
+    opacity: 0.0;
+}

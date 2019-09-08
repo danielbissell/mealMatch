@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Round</title>
+    <link rel="stylesheet" href="/css/stylesRound.css">
+</head>
+<body>
+<div id='container'>
+    <div id="titleDisp">
+            <div id="round"><p>Round: <div id='activeRound'></div></p> </div>
+            <div id="player"><h1><div id='activePlayer'></div></h1> </div>
+        </div>
+    <form id='restForm'>
+        <button id="postRestaurantBtn" 
+        method='post' type="submit" 
+        action='/postRestaurant.html'>Submit</button> 
+        <div id="restaurantList">  </div> 
+    </form>
+</div>
+<script>
+
+let getResturant = () => {
+if('geolocation' in navigator){
+    console.log('geolocation available');
+    navigator.geolocation.getCurrentPosition(async position => {
+        const name = 'player1'
+        const round = 1;
+
+        const latitude =  position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+
+    
+    const data = {name, round, latitude, longitude};
+
+
+    options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+
+    //restaurants returned here from API 
+  const response =  await fetch("/api", options)
+   const json = await response.json();
+    //console.log(json.restaurants) 
+
+    
+    json.restaurants.map((x, i) => {
+        //create chexboxes
+        const root = document.createElement('div');
+            root.id = "rootDiv";
+        const restaurant = document.createElement('div');
+        restaurant.setAttribute("class", "restaurantDiv");
+            restaurant.value = x;
+            restaurant.checked = false;
+            restaurant.id = `restaurantID_${i}`;
+        const input = document.createElement("INPUT");
+            input.setAttribute("type", "checkbox");
+            input.value = x;
+            input.id = `restaurantID_${i}`;
+
+        selected = [];
+        selectedCount = 0;
+    
+    restaurant.onclick = 
+    function() { //handle restaurant checkbox
+        console.log(json.restaurants.length, 'lenght!')
+      let limitRestaurants =  json.restaurants.length/2;
+    
+
+        if(restaurant.checked == true) //handling for on/off
+    {console.log('toggling off') // removing an element
+        restaurant.checked = false // removing checked property
+        document.getElementById(`restaurantID_${i}`).style.backgroundColor="lightgray";
+    selectedCount -= 1;
+    enable(i);    
+    var index = selected.indexOf(x);
+        if (index >= 0) {
+        selected.splice( index, 1 );
+        }
+            console.log(selected, 'item was removed')
+
+    } else {
+    console.log('toggling on')
+    restaurant.checked = true;
+    document.getElementById(`restaurantID_${i}`).style.backgroundColor="green";
+        if(selectedCount < limitRestaurants) // addnig element
+        {
+            //console.log(restaurant.value, 'REST VALUE')
+        selectedCount += 1;
+        selected.push(x);
+     //   console.log(x);
+        console.log(selected,  selectedCount);
+        }else{ // handle too many selected
+           disable(i); 
+        }
+    }
+
+    function disable(i){
+        console.log(i, 'to disable')
+            //document.getElementById(`restaurantID_${i}`).disabled = true
+            //console.log(document.getElementById(`restaurantID_${i}`).checked)
+
+        for(let j =0; j < json.restaurants.length; j++ ){
+            if (document.getElementById(`restaurantID_${j}`).checked == false){
+                document.getElementById(`restaurantID_${j}`).style.pointerEvents = 'none';
+            }else{
+                //document.getElementById(`restaurantID_${i}`).disabled = false
+            }
+        }
+    }//end disable
+    function enable(i){
+        console.log(i, 'to disable')
+            //document.getElementById(`restaurantID_${i}`).disabled = true
+            //console.log(document.getElementById(`restaurantID_${i}`).checked)
+
+        for(let j =0; j < json.restaurants.length; j++ ){
+            if (document.getElementById(`restaurantID_${j}`).checked == false){
+                document.getElementById(`restaurantID_${j}`).style.pointerEvents = 'auto'; 
+            }else{
+                //document.getElementById(`restaurantID_${i}`).disabled = false
+            }
+        }
+    }//end disable
+
+}//end handle restaurant chexbox
+
+        //render restaurants and checkboxes
+        restaurant.innerHTML= `${x}`;
+        document.getElementById('restaurantList').appendChild(restaurant)
+       // document.getElementById('restaurantList').appendChild(input);
+        //end render
+    });
+
+    });
+
+    }else {
+    console.log('geolocation not available')
+}
+}//end getResturant
+
+//////////////////compre restaurants//////////////////////
+async function compareRestaurants(activeRound, activePlayer){
+console.log('woahhhhhh  compare restaurants')
+let data = {activeRound, activePlayer}
+options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+
+async function getResturantCompare(){
+    return new Promise(async function(resolve, reject){
+            let answer = await fetch('/round.html/compareRestaurants', options);
+            let restAnswer = await answer.json()
+        //  await console.log(await restAnswer.restaurant, 'crazy if this showd restraunts')
+            await resolve(restAnswer);    
+        }) //end promise
+}
+let restaurantList = await getResturantCompare();
+let restaurantArray = await restaurantList.restaurant;
+//console.log(restaurantArray, 'restarurntArray')
+
+displayRestaurants(restaurantArray);
+
+
+}//end compare restaurants
+//////////////////////end/////////////////////////////////
+
+/////////////////////////////experimenatl/////////////////////////////////////////
+async function secondPlayerRound(activeRound, activePlayer){
+console.log('woahhhhhh  compare second player')
+let data = {activeRound, activePlayer}
+options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+
+async function getResturantCompare(){
+    return new Promise(async function(resolve, reject){
+            let answer = await fetch('/round.html/compareRestaurants2', options);
+            let restAnswer = await answer.json()
+        //  await console.log(await restAnswer.restaurant, 'crazy if this showd restraunts')
+            await resolve(restAnswer);    
+        }) //end promise
+}
+let restaurantList = await getResturantCompare();
+let restaurantArray = await restaurantList.restaurant;
+//console.log(restaurantArray, 'restarurntArray')
+
+
+displayRestaurants(restaurantArray);
+
+
+}//end compare second player
+
+async function displayRestaurants(restaurantArray){
+
+
+    let promise = new Promise((resolve, reject) => {
+    resolve(restaurantArray.length)
+  });
+   let  numMatched = await promise;
+console.log(numMatched, "NUM MATCHED")
+
+if(numMatched == 1){
+    console.log('winner__!', restaurantArray)
+    const data = {restaurantArray}
+    {window.location = "winner.html"}
+
+}else if(numMatched === undefined || numMatched == 0){
+    console.log('winner**!', restaurantArray)
+    const data = {restaurantArray}
+    {window.location = "winner.html"}
+} else {
+   
+     
+    restaurantArray.map((x, i) => {
+           //create chexboxes
+           const root = document.createElement('div');
+            root.id = "rootDiv";
+        const restaurant = document.createElement('div');
+        restaurant.setAttribute("class", "restaurantDiv");
+            restaurant.value = x;
+            restaurant.checked = false;
+            restaurant.id = `restaurantID_${i}`;
+        const input = document.createElement("INPUT");
+            input.setAttribute("type", "checkbox");
+            input.value = x;
+            input.id = `restaurantID_${i}`;
+
+        selected = [];
+        selectedCount = 0;
+    
+    restaurant.onclick = 
+    function() { //handle restaurant checkbox
+let limitRestaurants = restaurantArray.length/2;
+        if(restaurant.checked == true) //handling for on/off
+    {console.log('toggling off') // removing an element
+        restaurant.checked = false // removing checked property
+        document.getElementById(`restaurantID_${i}`).style.backgroundColor="lightgray";
+    selectedCount -= 1;
+    enable(i);    
+    var index = selected.indexOf(x);
+        if (index >= 0) {
+        selected.splice( index, 1 );
+        }
+            console.log(selected, 'item was removed')
+
+    } else {
+    console.log('toggling on')
+    restaurant.checked = true;
+    document.getElementById(`restaurantID_${i}`).style.backgroundColor="green";
+        if(selectedCount < limitRestaurants) // addnig element
+        {
+            //console.log(restaurant.value, 'REST VALUE')
+        selectedCount += 1;
+        selected.push(x);
+     //   console.log(x);
+        console.log(selected,  selectedCount);
+        }else{ // handle too many selected
+           disable(i); 
+        }
+    }
+
+}//end handle restaurant chexbox
+
+        //render restaurants and checkboxes
+        restaurant.innerHTML= `${x}`
+        document.getElementById('restaurantList').appendChild(restaurant)
+       // document.getElementById('restaurantList').appendChild(input);
+        //end render
+    });
+};//end else
+
+}
+
+
+
+async function getPlayers(){
+    return new  Promise(await function(resolve, reject){
+        let answer = fetch('/round.html/playerDisplay');
+        resolve(answer);
+    }) //end promise
+}//end get players
+
+//get the round
+ function getRound(){
+   return new Promise(async function(resolve, reject){
+    let answer = fetch('/round.html/roundNum');
+    resolve(answer);
+   })//end promise
+}; //end return round
+
+roundSetup();
+ async function  roundSetup() {
+/////http://localhost:3000/playerDisplay // that works!
+  
+let thePlayer = await getPlayers()
+ //console.log( await thePlayer.json())
+let answerJson = await thePlayer.json()
+let theRound = await getRound();
+let answerRound = await theRound.json()
+
+console.log('round answer', answerRound)
+var divPlayer = document.getElementById('activePlayer');
+var divRound = document.getElementById('activeRound');
+
+divPlayer.innerHTML +=  answerJson.player;
+divRound.innerHTML +=  answerRound.round;
+
+activeRound =  answerRound.round;
+activePlayer = answerJson.player;
+
+if(activeRound <= 2) {
+    getResturant();// gets all restaurants in a radius
+}else if(activeRound == 4  ) {
+    //secondPlayerRound(activeRound, activePlayer); //gets the round to prevous overlap
+    compareRestaurants(activeRound, activePlayer);
+} else {
+    compareRestaurants(activeRound, activePlayer);
+}
+
+}//end round setup
+
+
+let  postRestaurant = () => {
+    //console.log('posting to the server!')
+    //var round =  document.getElementById("activeRound");
+    
+
+    const data = {round: activeRound, selected: selected, player: activePlayer};
+    console.log(data, "RUOND DATA");
+options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+body: JSON.stringify(data)
+    };
+
+const response =  fetch("/postRestaurant", options)
+//const json =  response.json();
+
+
+}//end postResturant
+
+
+
+
+//click for post
+document.getElementById('postRestaurantBtn').addEventListener("click", postRestaurant);
+
+</script>
+</body>
+</html>

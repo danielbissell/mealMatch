@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>geoNearby v3</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div id="main">
+    <div id="titleBox">
+    <h1>Restaurant Pick'em</h1>
+    </div>     
+        <form id="loginForm" method='GET' action="round.html"> 
+            
+        <div id='playerSelect'>
+            <div id='player'>
+                <h1>Player 1</h1>
+                <input id="player1" type="text" placeholder="Name" style="text-align: center" required>  
+            </div> 
+            <div id='player'>
+                 <h1>Player 2</h1>
+                 <input id="player2" type="text" placeholder="Name" style="text-align: center" required>  
+            </div>  
+        </div>
+
+        <input id="startBtn" type="submit"value="Start Game" style="height: 30px"></input> 
+        </form>
+</div>
+ 
+
+<script>
+document.getElementById('startBtn').addEventListener("click", addPlayers);
+
+ function addPlayers(x) {
+let player1 = document.getElementById('player1').value
+let player2 = document.getElementById('player2').value
+//let keyword = document.getElementById('kw').value
+
+console.log(player1, '---', player2)
+
+
+let postPlayers = () => {
+const data = {player1, player2};
+    options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+    const response =  fetch("/addPlayers", options)
+        //const json = response.json();
+}//end post players
+
+postPlayers(); //call post players
+}//end add players
+</script>
+
+
+</body>
+
+
+
+</html>
