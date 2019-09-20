@@ -12,15 +12,36 @@
     <div id="titleDisp">
             <div id="round"><p>Round: <div id='activeRound'></div></p> </div>
             <div id="player"><h1><div id='activePlayer'></div></h1> </div>
+            <input id="postRestaurantBtn" type="submit"value="Submit"></input> 
         </div>
-    <form id='restForm'>
-        <button id="postRestaurantBtn" 
-        method='post' type="submit" 
-        action='/postRestaurant.html'>Submit</button> 
+
+
+    <div id='restForm'>
+
         <div id="restaurantList">  </div> 
-    </form>
+    </div>
 </div>
 <script>
+
+document.getElementById('postRestaurantBtn').addEventListener("click", postThem);
+
+ async function postThem(){
+     let x = 'nothing'
+     let y = 'nothing'
+    const data = {y, x};
+    options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+
+
+    const response =   fetch("/postRestaurant.html", options) 
+    {window.location = "round.html"}
+
+} 
 
 let getResturant = () => {
 if('geolocation' in navigator){
@@ -305,37 +326,45 @@ async function getPlayers(){
 
 roundSetup();
  async function  roundSetup() {
-/////http://localhost:3000/playerDisplay // that works!
-  
-let thePlayer = await getPlayers()
- //console.log( await thePlayer.json())
-let answerJson = await thePlayer.json()
-let theRound = await getRound();
-let answerRound = await theRound.json()
 
-console.log('round answer', answerRound)
+
+let thePlayer =  await getPlayers()
+ //console.log( await thePlayer.json(), 'the playaa')
+    let answerJson = await thePlayer.json()
+let theRound =  await getRound();
+    let answerRound = await theRound.json()
+
+console.log('round answer', answerRound.round)
+
+console.log('player answer', answerJson.player)
 var divPlayer = document.getElementById('activePlayer');
 var divRound = document.getElementById('activeRound');
 
 divPlayer.innerHTML +=  answerJson.player;
-divRound.innerHTML +=  answerRound.round;
+divRound.innerHTML +=   answerRound.round;
 
-activeRound =  answerRound.round;
-activePlayer = answerJson.player;
+activeRound =   answerRound.round;
+activePlayer =  answerJson.player;
 
-if(activeRound <= 2) {
-    getResturant();// gets all restaurants in a radius
-}else if(activeRound == 4  ) {
-    //secondPlayerRound(activeRound, activePlayer); //gets the round to prevous overlap
-    compareRestaurants(activeRound, activePlayer);
-} else {
-    compareRestaurants(activeRound, activePlayer);
-}
+evalround(activeRound, activePlayer);
 
 }//end round setup
 
+function evalround(ARound, APlayer){
 
-let  postRestaurant = () => {
+if(ARound <= 2) {
+        getResturant();// gets all restaurants in a radius
+    }else if(activeRound == 4  ) {
+        //secondPlayerRound(activeRound, activePlayer); //gets the round to prevous overlap
+        compareRestaurants(ARound, APlayer);
+    } else {
+        compareRestaurants(ARound, APlayer);
+    }
+
+}//end eval round
+
+
+let  postRestaurant = async () => {
     //console.log('posting to the server!')
     //var round =  document.getElementById("activeRound");
     
@@ -350,7 +379,7 @@ options = {
 body: JSON.stringify(data)
     };
 
-const response =  fetch("/postRestaurant", options)
+const response = await fetch("/postRestaurant", options)
 //const json =  response.json();
 
 

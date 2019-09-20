@@ -3,17 +3,19 @@
 /// want another round of possiblites fo playler 2 before final cut
 
 const express = require('express');
+var cors = require('cors')
 const Datastore = require('nedb');
 const request = require('request');
 var async = require("async");
-const key = 'AIzaSyAVtG_8VMv0PARYhRu2BYY9e92ITWlxsRw';
+const key = process.env.api_key;
 
 const app = express();
+app.use(cors())
 
 let port = process.env.PORT || 3000;
 
 app.listen(port, function () {
-    console.log('geoLocation app listening on port 3000!')
+    console.log(`geoLocation app listening on port ${port}`)
   });
 ;
   app.use(express.static('public'));
@@ -155,38 +157,77 @@ function insertData (data) {
   });//end post/API
 
   //use this once ready to post
-  app.post('/postRestaurant', function (request, response) {
+  app.post('/postRestaurant',async function (request, res) {
+   
+
     console.log('got those resturants!', request.body);
-    let selectedRestaurants = request.body;
-    let activeRound = databasePlayers.find({},  async function (err,docs){
+    let selectedRestaurants = await request.body;
+    
+    let activeRound = await databasePlayers.find({},  async function (err,docs){
        let  answer = await docs.round
        return  answer
-    })//end ative round
+    })
 
-    let restAndRound = {round: activeRound, selected: selectedRestaurants }
-     databaseRounds.insert(restAndRound);
+
+
+      let restAndRound =  {round: activeRound, selected: selectedRestaurants }
+      await databaseRounds.insert(restAndRound)
+      await console.log('Inserted restaurants into round ', restAndRound)
+      
+
+      res.json({
+        success: 'success'
+        //round: round
+      }) 
+
+
+
+
+
+    console.log('inserted into Round Data')
 
   //  console.log(request.body, 'request -- aka data from webpage')
   });
   //
 
   //addPlayers... want to keep track of players
-  app.post('/addPlayers', function (request, res) {
+  app.post('/addPlayers', async function (request, res) {
     console.log('players Added!');
    // console.log(request.body, 'Player Request -- aka data from webpage')
 
-  let newPlayers = request.body;
-  newPlayersRounds = {round: 1, newPlayers}
 
+
+    
+ let newPlayers = await request.body;
+console.log(newPlayers)
+
+ newPlayersRounds = await {round: 1, newPlayers}
+
+
+
+ async function removeDBElements(reqs){
   //remvoe all previous players
-  databasePlayers.remove({}, { multi: true }, function (err, numRemoved) {
+    databasePlayers.remove({}, { multi: true }, function (err, numRemoved) {
         console.log('all players removed')
   });
-  databaseRounds.remove({}, { multi: true }, function (err, numRemoved) {
-    console.log('all rounds removed')
+   databaseRounds.remove({}, { multi: true }, function (err, numRemoved) {
+     console.log('all rounds removed')
 });
+  }
+
+
   //insert active players
-  databasePlayers.insert(newPlayersRounds);
+  removeDBElements().then( async function(){
+     databasePlayers.insert(newPlayersRounds);
+  await console.log('inserted players')
+  }).catch(function(err){
+    console.log(err)
+  })
+
+  res.json({
+    success: 'success'
+    //round: round
+  }) 
 
 });//end addPlayers post
 

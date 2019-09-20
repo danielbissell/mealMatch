@@ -1,7 +1,8 @@
 body{
-    background-image: url('../images/restInterior1.jpg');
+    background-image: url('../images/restInterior1.jpg') ;
     width: 100%;
-    background-size: cover;
+
+    background-repeat: no-repeat;
     display: flex;
 
 }
@@ -22,7 +23,8 @@ Input[type="submit"]{
     border: none;
     text-align: center;
     margin: 10px 0px 10px 0px;
-    width: 300px;
+    max-width: 300px;
+    min-width: 100px;
 }
 #answerContainer{
     display: flex;
@@ -31,4 +33,16 @@ Input[type="submit"]{
     text-align: center;
     justify-content: center;
     padding: 20px;
+    flex-direction: column;
+}
+#answerSection{
+    font-size: 80%;
+    padding: 10px;
+}
+@media only screen and (max-width: 700px) {
+    #body{
+        background-size: 100vmax 100vmax;
+    }
+
+
 }
