@@ -174,12 +174,17 @@ height: 300px;
     #startBtn{
         min-width: 40px;
         padding: 20px;
-        font-size: 80%;
+        font-size: 100%;
     }
 
-body{
-
-}
+   #player1{
+    height: 40px;
+    font-size: 130%;
+    }   
+    #player2{
+        height: 40px;
+        font-size: 130%;
+        }   
 }
 
 @media only screen and (max-width : 700px) { 
@@ -197,7 +202,5 @@ max-height: 100px;
     #startBtn{
 
     }
-body{
 
-}
 }
