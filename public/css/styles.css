@@ -111,22 +111,93 @@ input[type="submit"]{
 }
 
 
-@media only screen and (max-width: 700px) {
+@media only screen and (min-device-width : 375px) and (max-device-width : 667px) { 
     #main{
-
-font-size: 110%;
+padding: 130px;
+font-size: 180%;
     }
 
     #playerSelect{
         flex-direction: column;
     }
     #player{
-        max-height: 100px;
+max-width: 100%;
+max-height: 100%;
 
     }
     #startBtn{
         min-width: 40px;
+        padding: 20px;
+    }
+body{
+    padding: 1
+}
+}
+
+@media only screen and (min-device-width : 375px) and (max-device-width : 667px) { 
+    #main{
+padding: 130px;
+font-size: 180%;
     }
 
+    #playerSelect{
+        flex-direction: column;
+    }
+    #player{
+max-width: 100%;
+max-height: 100%;
 
+    }
+    #startBtn{
+        min-width: 40px;
+        padding: 20px;
+    }
+body{
+    padding: 1
+}
+}
 
+@media only screen and (min-device-width : 375px) and (max-device-width : 667px) { 
+    #main{
+padding: 130px;
+font-size: 180%;
+    }
+
+    #playerSelect{
+        flex-direction: column;
+    }
+    #player{
+width: 300px;
+height: 300px;
+
+    }
+    #startBtn{
+        min-width: 40px;
+        padding: 20px;
+        font-size: 80%;
+    }
+
+body{
+
+}
+}
+
+@media only screen and (max-width : 700px) { 
+    #main{
+font-size: 70%;
+    }
+
+    #playerSelect{
+        flex-direction: column;
+    }
+    #player{
+max-height: 100px;
+
+    }
+    #startBtn{
+
+    }
+body{
+
+}
+}
