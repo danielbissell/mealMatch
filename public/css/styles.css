@@ -72,12 +72,13 @@ width: 500px;
     text-align: center;
 }
 body{
-    background-image: url('../images/restInterior1.jpg');
-    width: 100%;
-    width: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: url('../images/restInterior1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(128, 128, 128, 0.8);
 }
+
 input[type="text"], textarea {
     background-color : white; 
 
@@ -114,10 +115,14 @@ input[type="submit"]{
 
 font-size: 80%;
     }
+    body{
+        background-size: 100vmax 100vmax;
+    }
+
 
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 600px) {
     #main{
 
 font-size: 70%;
@@ -133,5 +138,9 @@ font-size: 70%;
     #startBtn{
         min-width: 40px;
     }
+    body{
+
+    }
+
 
 }
