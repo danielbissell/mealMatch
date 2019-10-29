@@ -9,6 +9,7 @@ const request = require('request');
 var async = require("async");
 const key = process.env.api_key;
 
+
 const app = express();
 app.use(cors())
 
@@ -441,7 +442,9 @@ getSelected().then(async function(x){
       let aRound =  await num;
       console.log(aRound, "AR in winner")
       getSelected().then(async function(m){
-       
+
+        if (aRound > 2){ // < round 2 covers all conditions not won in after first player 2 instance
+      
         for (i = 0; i < m.length; i++) { 
           if (m[i].selected.round == aRound){
             let winner = m[i].selected.selected
@@ -455,6 +458,34 @@ getSelected().then(async function(x){
           })
                  }//end if  
         }//end for loop
+      } else { //handles match in first round
+        console.log("Match on first round")
+
+        let player2selected = "";
+        let player1selected = "";
+        for (i = 0; i < m.length; i++) { 
+          if (m[i].selected.round == aRound){
+             player2selected = m[i].selected.selected
+                 }//end if  
+
+                 if (m[i].selected.round == aRound - 1){
+                   player1selected = m[i].selected.selected
+                       }//end if  
+
+
+
+        }//end for loop
+
+
+        let overlappingRestaurantsR1 = await player2selected.filter(value => player1selected.includes(value))
+        console.log(overlappingRestaurantsR1, '<--overlapping restuarants');
+        
+        await console.log(overlappingRestaurantsR1, 'winner! server')
+        await res.json({
+          answer: overlappingRestaurantsR1
+        })
+
+      }
     
 
     }) }).catch(function(err){

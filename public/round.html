@@ -302,6 +302,38 @@ let limitRestaurants = restaurantArray.length/2;
         document.getElementById('restaurantList').appendChild(restaurant)
        // document.getElementById('restaurantList').appendChild(input);
         //end render
+
+//////////////////////////////added today////////////////////////////////////////////////
+
+        function disable(i){
+        console.log(i, 'to disable')
+            //document.getElementById(`restaurantID_${i}`).disabled = true
+            //console.log(document.getElementById(`restaurantID_${i}`).checked)
+
+        for(let j =0; j < restaurantArray.length; j++ ){
+            if (document.getElementById(`restaurantID_${j}`).checked == false){
+                document.getElementById(`restaurantID_${j}`).style.pointerEvents = 'none';
+            }else{
+                //document.getElementById(`restaurantID_${i}`).disabled = false
+            }
+        }
+    }//end disable
+    function enable(i){
+        console.log(i, 'to disable')
+            //document.getElementById(`restaurantID_${i}`).disabled = true
+            //console.log(document.getElementById(`restaurantID_${i}`).checked)
+
+        for(let j =0; j < restaurantArray.length; j++ ){
+            if (document.getElementById(`restaurantID_${j}`).checked == false){
+                document.getElementById(`restaurantID_${j}`).style.pointerEvents = 'auto'; 
+            }else{
+                //document.getElementById(`restaurantID_${i}`).disabled = false
+            }
+        }
+    }//end disable
+
+    ///////////////////////////////////// end ///////////////////////////////////////////////
+
     });
 };//end else
 
