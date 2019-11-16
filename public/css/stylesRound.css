@@ -52,7 +52,7 @@ body{
     background: url('../images/restInterior1.jpg') no-repeat center center fixed;
     background-size: cover;
     height: 100%;
-    overflow: hidden;
+  /*  overflow: hidden; */
     background-color: rgba(128, 128, 128, 0.8);
 }
 #round{
