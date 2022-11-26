@@ -1,6 +1,7 @@
 # Meal Match
 
-A application that allows users to pick a restaurant of their choice. This is a turn based game where users select restaurants they would like to visit inside a radius. Overlapping selections are used to narrow the final match. 
+A application that allows users to pick a restaurant of their choice. This is a turn based game where users select restaurants they would like to visit inside a radius. Overlapping selections are used to narrow the final match.   
+
 
 ## Author
 
